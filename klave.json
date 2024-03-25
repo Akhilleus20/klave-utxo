@@ -1,0 +1,14 @@
+{
+    "version": "1",
+    "branches": [
+        "*"
+    ],
+    "applications": [
+        {
+            "name": "utxo_app",
+            "slug": "utxo_app",
+            "version": "0.0.1",
+            "rootDir": "/apps/utxo_app"
+        }
+    ]
+}
