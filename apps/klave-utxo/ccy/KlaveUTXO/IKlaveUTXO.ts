@@ -6,7 +6,7 @@ import {address, amount, index} from "../../klave/types"
 export class UTXO {
     amount : amount;
     owner: address; //hash scp key
-    data: string;  
+    data: string;
     spent: boolean;
 
     constructor(amount: amount, owner: address, data: string) {
@@ -24,7 +24,7 @@ export class TxInput {
 
     constructor(id: index, signature: string) {
         this.id = id;
-        this.signature = signature; 
+        this.signature = signature;
     }
 };
 
@@ -45,17 +45,17 @@ export class TxOutput {
  */
 export interface IKlaveUTXO {
     /**
-     * @dev Returns the value of tokens in existence.
+     * @dev Returns the value of utxos in existence.
      */
     totalSupply() : amount;
 
     /**
-     * @dev Returns the value of tokens owned by `account`.
+     * @dev Returns the value of utxos owned by `account`.
      */
     balanceOf(account: address) : amount;
 
     /**
-     * @dev Check UTXO status   
+     * @dev Check UTXO status
      */
     utxo(id: index) : UTXO;
 
@@ -65,7 +65,7 @@ export interface IKlaveUTXO {
     utxoLength() : number;
 
     /**
-     * @dev Moves a `value` amount of tokens from the caller's account to `to`.
+     * @dev Moves a `value` amount of utxos from the caller's account to `to`.
      *
      * Returns a boolean value indicating whether the operation succeeded.
      *

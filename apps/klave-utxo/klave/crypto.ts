@@ -1,4 +1,4 @@
-import { JSON, Crypto } from "@klave/sdk";
+import { Crypto, JSON } from "@klave/sdk";
 import { convertToUint8Array, convertToU8Array } from "./helpers";
 import { emit } from "./types";
 import { encode as b64encode, decode as b64decode } from 'as-base64/assembly';
@@ -37,19 +37,19 @@ export function sign(input: SignInput): string {
         if (signatureU8) {
             let signatureBytes = convertToUint8Array(signatureU8);
             signature = b64encode(signatureBytes);
-            emit(`Signature: ${signature}`);            
-        }        
+            emit(`Signature: ${signature}`);
+        }
     }
     return signature;
 }
 
 export function verify(input: VerifyInput): boolean {
     const key = Crypto.ECDSA.getKey(input.keyName);
-    if (key) {        
+    if (key) {
         emit(`Verifying message: ${input.message} - with signature: ${input.signature}`);
         let signatureAsBytes = b64decode(input.signature);
         return key.verify(input.message, convertToU8Array(signatureAsBytes));
-    } 
+    }
     return false;
 }
 

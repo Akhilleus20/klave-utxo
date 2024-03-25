@@ -5,10 +5,10 @@
     ],
     "applications": [
         {
-            "name": "utxo_app",
-            "slug": "utxo_app",
+            "name": "klave-utxo",
+            "slug": "klave-utxo",
             "version": "0.0.1",
-            "rootDir": "/apps/utxo_app"
+            "rootDir": "/apps/klave-utxo"
         }
     ]
 }

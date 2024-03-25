@@ -5,7 +5,6 @@ import { address, amount, index, revert, emit } from "../../klave/types"
 import { verify, VerifyInput } from "../../klave/crypto"
 import { Account, UTXOBrief } from "../../klave/KlaveUTXO/KlaveUTXOStructs"
 import { IKlaveUTXO, UTXO, TxInput, TxOutput } from "./IKlaveUTXO"
-import { IKlaveUTXOEvents } from "../../interfaces/ERC20Events";
 
 @serializable
 export class TransferOutput {
@@ -19,7 +18,7 @@ export class TransferOutput {
 }
 
 @serializable
-export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
+export class KlaveUTXO implements IKlaveUTXO {
     _utxos: Array<UTXO>;
     _accounts: Array<Account>;
 
@@ -35,24 +34,23 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
      * construction.
      */
     constructor(name_: string, symbol_: string, decimals_: number, totalSupply_: amount) {
-        super();
         this._name = name_;
         this._symbol = symbol_;
         this._decimals = decimals_;
         this._totalSupply = totalSupply_;
-        this._accounts = new Array<Account>();        
+        this._accounts = new Array<Account>();
         this._utxos = new Array<UTXO>();
     }
 
     /**
-     * @dev Returns the name of the token.
+     * @dev Returns the name of the ccy.
      */
     name() : string {
         return this._name;
     }
 
     /**
-     * @dev Returns the symbol of the token, usually a shorter version of the
+     * @dev Returns the symbol of the ccy, usually a shorter version of the
      * name.
      */
     symbol() : string {
@@ -99,22 +97,21 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
         return current_max;
     }
 
-    utxo(id: index) : UTXO {                
+    utxo(id: index) : UTXO {
         if (id < this._utxos.length) {
             revert("KlaveUTXO: id out of bound");
-        } 
+        }
         return this._utxos[id];
     }
 
     transfer(amount: amount, input: TxInput, output: TxOutput) : boolean {
         let creator = Context.get('sender');
-        this._transfer(amount, input, output, creator);        
-        emit(this.TransferEvent(creator, output.owner, amount));
+        this._transfer(amount, input, output, creator);
         return true;
     }
 
     _transfer(amount: amount, input: TxInput, output: TxOutput, creator: address) : TransferOutput {
-        let transferOutput = new TransferOutput(0, 0);        
+        let transferOutput = new TransferOutput(0, 0);
         let cache = this._utxos[input.id];
         if (output.amount > cache.amount) {
             revert("KlaveUTXO: transfer amount exceeds utxo amount");
@@ -144,8 +141,8 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
         if (output.amount != amount) {
             revert("KlaveUTXO: invalid amounts");
             return -1;
-        } 
-        this._totalSupply += amount;        
+        }
+        this._totalSupply += amount;
         this.addToBalance(output.owner, amount);
         return this._create(output, "", data);
     }
@@ -154,7 +151,7 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
         if (output.amount != amount) {
             revert("KlaveUTXO: invalid amounts");
             return -1;
-        } 
+        }
         if (this._totalSupply < amount) {
             revert("KlaveUTXO: insufficient supply");
             return -1;
@@ -163,7 +160,7 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
             revert("KlaveUTXO: insufficient balance");
             return -1;
         }
-        this._totalSupply -= amount;        
+        this._totalSupply -= amount;
         this.removeFromBalance(output.owner, amount);
         return this._create(output, "", data);
     }
@@ -175,14 +172,11 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
         }
         let id = this._nextId();
         let utxo = new UTXO(output.amount, output.owner, data);
-        
+
         this._beforeCreate(output.owner,utxo);
-
         this._utxos.push(utxo);
-        emit(this.UTXOCreated(id, creator));
-
-        this._afterCreate(output.owner,utxo, id);       
-        return id; 
+        this._afterCreate(output.owner,utxo, id);
+        return id;
     }
 
     _spend(input: TxInput, spender: address) : void {
@@ -191,14 +185,14 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
             return;
         }
         let utxo = this._utxos[input.id];
-        
+
         if(utxo.spent) {
             revert("KlaveUTXO: utxo has already been spent");
             return;
         }
 
         this._beforeSpend(utxo.owner,utxo);
-                        
+
         let verifyInput = new VerifyInput(utxo.owner, input.id.toString(), input.signature);
         emit(`verifyInput: ${JSON.stringify(verifyInput)}`);
 
@@ -208,8 +202,6 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
         }
 
         this._utxos[input.id].spent = true;
-        emit(this.UTXOSpent(input.id, spender));
-
         this._afterSpend(utxo.owner,utxo,input.id);
     }
 
@@ -224,7 +216,7 @@ export class KlaveUTXO extends IKlaveUTXOEvents implements IKlaveUTXO {
     _afterSpend(spender: address, utxo: UTXO, id: index) : void {
         this.removeUTXOfromAccount(spender, id);
     }
-    
+
     /**
      * @dev Returns the account associated with `account`.
      */

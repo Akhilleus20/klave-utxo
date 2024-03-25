@@ -1,5 +1,5 @@
-import { JSON } from "@klave/sdk"
-import { TxInput, TxOutput } from "../../token/KlaveUTXO/IKlaveUTXO";
+//import { JSON } from "@klave/sdk"
+import { TxInput, TxOutput } from "../../ccy/KlaveUTXO/IKlaveUTXO";
 import { address, amount } from "../types";
 
 @serializable
@@ -11,9 +11,9 @@ export class CreateInput {
 }
 
 @serializable
-export class TransferInput {    
+export class TransferInput {
     value!: amount;
-    input!: TxInput;    
+    input!: TxInput;
     output!: TxOutput;
 
     constructor(value: amount, input: TxInput, output: TxOutput) {
@@ -26,7 +26,7 @@ export class TransferInput {
 @serializable
 export class MintInput {
     amount!: amount;
-    output!: TxOutput; 
+    output!: TxOutput;
     data!: string;
 
     constructor(amount: amount, output: TxOutput, data: string) {
@@ -41,7 +41,7 @@ export class BurnInput {
     amount!: amount;
     output!: TxOutput;
     data!: string;
-    
+
     constructor(amount: amount, output: TxOutput, data: string) {
         this.amount = amount;
         this.output = new TxOutput(amount, output.owner);
@@ -50,36 +50,14 @@ export class BurnInput {
 }
 
 @serializable
-export class PaymentInput {    
+export class PaymentInput {
     value!: amount;
-    payer!: address;    
+    payer!: address;
     payee!: address;
 
     constructor(value: amount, input: address, output: address) {
         this.value = value;
         this.payer = input;
         this.payee = output;
-    }
-}
-
-@serializable
-export class FundInput {
-    amount!: amount;
-    payee!: address;     
-
-    constructor(amount: amount, payee: address) {
-        this.amount = amount;
-        this.payee = payee;        
-    }
-}
-
-@serializable
-export class DefundInput {
-    amount!: amount;
-    payer!: address;     
-
-    constructor(amount: amount, payer: address) {
-        this.amount = amount;
-        this.payer = payer;
     }
 }

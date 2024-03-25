@@ -15,7 +15,7 @@ export class UTXOBrief {
 
 @serializable
 export class Account {
-    owner: address;    
+    owner: address;
     balance: amount;
     utxoList: Array<UTXOBrief>;
 
