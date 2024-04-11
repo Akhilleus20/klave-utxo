@@ -23,7 +23,7 @@ const _saveKlaveUTXO = function(KlaveUTXO : KlaveUTXO): void {
 
 /**
  * @transaction
- * @param {CreateInput} - A parsed input argument containing the name, symbol, decimals and total supply of the currency
+ * @param {CreateInput}
  *  */
 export function createCoin(input: CreateInput): void {
     let KlaveUTXO_table = Ledger.getTable(KlaveUTXOTable).get("ALL");
@@ -44,7 +44,7 @@ export function createCoin(input: CreateInput): void {
 }
 
 /**
- * @query return name
+ * @query
  *  */
 export function name(): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -52,7 +52,7 @@ export function name(): void {
 }
 
 /**
- * @query return symbol
+ * @query
  *  */
 export function symbol(): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -60,7 +60,7 @@ export function symbol(): void {
 }
 
 /**
- * @query return symbol
+ * @query
  *  */
 export function decimals(): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -68,7 +68,7 @@ export function decimals(): void {
 }
 
 /**
- * @query return total supply of the currency
+ * @query
  *  */
 export function totalSupply(): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -76,8 +76,8 @@ export function totalSupply(): void {
 }
 
 /**
- * @query return balances of the currency
- * @param {string} owner - the address of the owner, takes the sender's address if not provided
+ * @query
+ * @param {string} owner
  *  */
 export function balanceOf(owner: string): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -91,7 +91,7 @@ export function balanceOf(owner: string): void {
 
 /**
  * @transaction
- * @param {TransferInput} - A parsed input argument containing the "to" address and the value to be paid
+ * @param {TransferInput}
  *  */
 export function transfer(input: TransferInput): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -102,8 +102,8 @@ export function transfer(input: TransferInput): void {
 }
 
 /**
- * @transaction create new utxos and assign them to the specified address
- * @param {MintInput} - A parsed input argument containing the address of the recipient and the amount of utxos to be created
+ * @transaction
+ * @param {MintInput}
  */
 export function mint(input: MintInput): void {
     let KlaveUTXO = _loadKlaveUTXO();
@@ -118,8 +118,8 @@ export function mint(input: MintInput): void {
 }
 
 /**
- * @transaction Destroy utxos from the specified address
- * @param {BurnInput} - A parsed input argument containing the address of the sender and the amount of utxos to be destroyed
+ * @transaction
+ * @param {BurnInput}
  */
 export function burn(input: BurnInput): void {
     let KlaveUTXO = _loadKlaveUTXO();
